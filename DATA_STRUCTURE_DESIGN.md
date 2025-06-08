@@ -4,13 +4,16 @@
 
 ## 概述
 
-本文档详细定义了 Nihongogo 语言学习系统的核心数据结构设计。采用以句子为核心单元的解耦设计，支持多语言扩展和灵活的课程配置。
+本文档详细定义了 Nihongogo 日语学习系统的核心数据结构设计。采用以句子为核心单元的解耦设计，专注于中文母语者学习日语的场景，同时为未来扩展其他目标语言（韩语、英语等）预留架构灵活性。
+
+**当前重点**：中文母语者学习日语
+**未来扩展**：中文母语者学习韩语、英语、西语等
 
 ---
 
 ## 1. 核心句子数据结构
 
-### 1.1 句子基础结构
+### 1.1 日语句子基础结构
 
 ```json
 {
@@ -31,22 +34,34 @@
     "vocabulary": [
       {
         "word": "注文",
-        "reading": "ちゅうもん", 
+        "reading": "ちゅうもん",
         "meaning": "点餐",
         "pos": "noun",
-        "difficulty": 2
+        "difficulty": 2,
+        "kanji_info": {
+          "kanji": "注文",
+          "hiragana": "ちゅうもん",
+          "stroke_count": 11
+        }
       },
       {
         "word": "お願いします",
         "reading": "おねがいします",
         "meaning": "请",
         "pos": "expression",
-        "difficulty": 1
+        "difficulty": 1,
+        "keigo_type": "丁寧語"
       }
     ],
     "sentence_type": "request",
     "formality_level": "polite",
-    "speech_act": "requesting_service"
+    "speech_act": "requesting_service",
+    "japanese_specific": {
+      "keigo_level": "丁寧語",
+      "particles": ["を"],
+      "verb_form": "ます形",
+      "writing_systems_used": ["hiragana", "kanji"]
+    }
   },
   "audio_data": {
     "file_path": "audio/sentences/sent_restaurant_001.mp3",
@@ -89,14 +104,21 @@
     "pronunciation_focus": ["long_vowel", "polite_ending", "particle_wo"],
     "common_errors": [
       "omitting_particles",
-      "wrong_intonation", 
+      "wrong_intonation",
       "mispronouncing_chuumon"
     ],
     "learning_objectives": [
       "master_polite_requests",
       "understand_service_context",
       "practice_clear_pronunciation"
-    ]
+    ],
+    "japanese_learning_focus": {
+      "pitch_accent_pattern": "LHL",
+      "particle_emphasis": "を",
+      "keigo_practice": true,
+      "kanji_recognition": ["注", "文"],
+      "cultural_context": "restaurant_etiquette"
+    }
   },
   "tags": ["restaurant", "service", "polite_request", "beginner_friendly", "essential"],
   "metadata": {
@@ -111,9 +133,11 @@
 }
 ```
 
-### 1.2 多语言句子结构示例
+### 1.2 未来扩展：其他目标语言结构示例
 
-#### 韩语句子结构
+> **注意**：以下结构为未来扩展预留，当前开发重点仍为日语学习
+
+#### 韩语句子结构（未来扩展）
 ```json
 {
   "sentence_id": "sent_restaurant_ko_001",
@@ -152,31 +176,30 @@
 }
 ```
 
-#### 西语句子结构
+#### 英语句子结构（未来扩展）
 ```json
 {
-  "sentence_id": "sent_restaurant_es_001", 
+  "sentence_id": "sent_restaurant_en_001",
   "language_pair": {
-    "target_language": "es",
+    "target_language": "en",
     "native_language": "zh"
   },
   "content": {
-    "target": "Disculpe, me gustaría hacer un pedido.",
+    "target": "Excuse me, I'd like to place an order.",
     "native": "不好意思，我想点餐。",
     "romanization": null,
-    "pronunciation_guide": "dis-kul-pe, me gus-ta-ri-a a-ser un pe-di-do"
+    "pronunciation_guide": "ik-skyooz mee, ahyd lahyk tu pleys an awr-der"
   },
   "linguistic_data": {
-    "difficulty_level": 3,
-    "grammar_points": ["me gustaría", "hacer un pedido"],
+    "difficulty_level": 2,
+    "grammar_points": ["I'd like to", "place an order"],
     "vocabulary": [
       {
-        "word": "pedido",
+        "word": "order",
         "reading": null,
         "meaning": "订单",
         "pos": "noun",
-        "difficulty": 2,
-        "gender": "masculine"
+        "difficulty": 1
       }
     ],
     "sentence_type": "request",
@@ -184,30 +207,18 @@
     "speech_act": "requesting_service"
   },
   "language_specific_features": {
-    "verb_conjugations": [
-      {
-        "infinitive": "gustar",
-        "conjugated": "gustaría",
-        "tense": "conditional",
-        "person": "first_singular"
-      }
-    ],
-    "gender_agreements": [
-      {
-        "word": "un pedido",
-        "gender": "masculine",
-        "number": "singular"
-      }
-    ]
+    "contractions": ["I'd"],
+    "phrasal_verbs": ["place an order"],
+    "stress_patterns": ["EX-cuse", "OR-der"]
   }
 }
 ```
 
 ---
 
-## 2. 对话场景数据结构
+## 2. 日语对话场景数据结构
 
-### 2.1 基础对话结构
+### 2.1 日语对话基础结构
 
 ```json
 {
@@ -272,6 +283,12 @@
     "点餐时的礼貌用语",
     "服务员与顾客的互动模式"
   ],
+  "japanese_learning_focus": {
+    "keigo_practice": "丁寧語を中心とした接客用語",
+    "cultural_etiquette": "日本の飲食店でのマナー",
+    "pronunciation_points": ["いらっしゃいませ", "ありがとうございます"],
+    "grammar_emphasis": ["〜をお願いします", "〜ていただけませんか"]
+  },
   "metadata": {
     "created_at": "2024-01-15T10:00:00Z",
     "version": "1.0",
@@ -283,9 +300,9 @@
 
 ---
 
-## 3. 训练模块配置结构
+## 3. 日语训练模块配置结构
 
-### 3.1 听力训练模块
+### 3.1 日语听力训练模块
 
 ```json
 {
@@ -293,7 +310,7 @@
   "module_type": "listening_comprehension",
   "title": "餐厅场景听力理解",
   "language_pair": {
-    "target_language": "ja", 
+    "target_language": "ja",
     "native_language": "zh"
   },
   "content_source": {
@@ -337,7 +354,13 @@
         "show_transcript": true,
         "highlight_keywords": true,
         "vocabulary_popup": true,
-        "grammar_explanation": true
+        "grammar_explanation": true,
+        "japanese_specific": {
+          "show_furigana": true,
+          "kanji_breakdown": true,
+          "particle_highlighting": true,
+          "keigo_explanation": true
+        }
       }
     },
     {
@@ -389,7 +412,7 @@
 }
 ```
 
-### 3.2 口语训练模块
+### 3.2 日语口语训练模块
 
 ```json
 {
@@ -416,7 +439,13 @@
       "config": {
         "phoneme_focus": ["long_vowel", "particle_pronunciation"],
         "repetition_count": 5,
-        "feedback_detail": "detailed"
+        "feedback_detail": "detailed",
+        "japanese_specific": {
+          "pitch_accent_training": true,
+          "mora_timing_practice": true,
+          "keigo_pronunciation": true,
+          "particle_stress": ["を", "が", "は"]
+        }
       }
     },
     {
@@ -444,15 +473,15 @@
 
 ---
 
-## 4. 训练营配置数据结构
+## 4. 日语训练营配置数据结构
 
-### 4.1 训练营模板结构
+### 4.1 日语训练营模板结构
 
 ```json
 {
-  "template_id": "90day_breakthrough",
-  "title": "90天快速突破训练营",
-  "description": "从零基础到日常对话流畅的系统化学习路径",
+  "template_id": "90day_japanese_breakthrough",
+  "title": "90天日语快速突破训练营",
+  "description": "专为中文母语者设计的日语零基础到日常对话流畅的系统化学习路径",
   "language_pair": {
     "target_language": "ja",
     "native_language": "zh"
@@ -466,9 +495,14 @@
   },
   "target_audience": {
     "current_level": ["beginner", "false_beginner"],
-    "goals": ["daily_conversation", "travel", "basic_business"],
+    "goals": ["daily_conversation", "travel", "basic_business", "jlpt_preparation"],
     "time_availability": "regular",
-    "motivation_level": "high"
+    "motivation_level": "high",
+    "chinese_speaker_specific": {
+      "kanji_advantage": true,
+      "common_difficulties": ["particles", "keigo", "pronunciation"],
+      "cultural_bridge": "chinese_japanese_cultural_comparison"
+    }
   },
   "learning_path": [
     {
@@ -478,22 +512,30 @@
       "start_day": 1,
       "end_day": 14,
       "objectives": [
-        "掌握基础发音规则",
+        "掌握假名发音规则",
         "学会基本问候用语",
-        "建立语感基础"
+        "建立日语语感基础",
+        "理解基础敬语概念"
       ],
       "modules": [
-        "pronunciation_basics",
+        "hiragana_katakana_basics",
+        "pronunciation_fundamentals",
         "greetings_formal",
         "greetings_casual",
-        "self_introduction"
+        "self_introduction_japanese"
       ],
       "daily_structure": {
         "listening_minutes": 10,
         "speaking_practice": 15,
         "vocabulary_count": 8,
         "grammar_points": 1,
-        "cultural_notes": 1
+        "cultural_notes": 1,
+        "japanese_specific": {
+          "hiragana_practice": 5,
+          "katakana_practice": 3,
+          "basic_kanji": 2,
+          "pitch_accent_drill": 2
+        }
       },
       "milestone_test": {
         "day": 14,
@@ -624,7 +666,7 @@
 
 ## 5. 语言配置数据结构
 
-### 5.1 语言特征配置
+### 5.1 日语语言特征配置（当前重点）
 
 ```json
 {
@@ -671,8 +713,15 @@
         "hierarchy_awareness": "essential",
         "indirect_communication": "common",
         "silence_tolerance": "high"
+      },
+      "chinese_learner_specific": {
+        "kanji_advantage": "significant",
+        "common_mistakes": ["particle_confusion", "keigo_overuse", "pitch_accent"],
+        "learning_strategies": ["kanji_to_vocabulary", "pattern_recognition"],
+        "cultural_bridges": ["confucian_values", "business_hierarchy"]
       }
     },
+    // 未来扩展语言配置（预留结构）
     "ko": {
       "language_name": "Korean",
       "native_name": "한국어",
@@ -681,58 +730,26 @@
       "romanization_system": "revised_romanization",
       "text_direction": "ltr",
       "formality_levels": ["informal", "formal", "honorific"],
-      "unique_features": {
-        "has_honorifics": true,
-        "has_agglutination": true,
-        "word_order": "SOV",
-        "vowel_harmony": "limited",
-        "consonant_clusters": true
-      },
-      "pronunciation_features": {
-        "phoneme_inventory": {
-          "vowels": ["a", "e", "i", "o", "u", "eo", "eu"],
-          "consonants": ["k", "g", "n", "d", "r", "m", "b", "s", "j", "ch", "t", "p", "h"],
-          "special_sounds": ["aspirated_consonants", "tense_consonants"]
-        },
-        "common_difficulties": [
-          "aspirated_vs_tense",
-          "final_consonants",
-          "vowel_distinctions"
-        ]
+      "development_priority": "phase_2",
+      "chinese_learner_specific": {
+        "hanja_advantage": "moderate",
+        "common_mistakes": ["honorific_levels", "pronunciation"],
+        "cultural_bridges": ["confucian_heritage", "modern_pop_culture"]
       }
     },
-    "es": {
-      "language_name": "Spanish",
-      "native_name": "Español",
-      "iso_code": "es-ES",
+    "en": {
+      "language_name": "English",
+      "native_name": "English",
+      "iso_code": "en-US",
       "writing_systems": ["latin"],
       "romanization_system": null,
       "text_direction": "ltr",
       "formality_levels": ["informal", "formal"],
-      "unique_features": {
-        "has_gender": true,
-        "has_conjugation": true,
-        "word_order": "SVO",
-        "rolled_r": true,
-        "subjunctive_mood": true
-      },
-      "pronunciation_features": {
-        "phoneme_inventory": {
-          "vowels": ["a", "e", "i", "o", "u"],
-          "consonants": ["p", "b", "t", "d", "k", "g", "f", "s", "x", "m", "n", "l", "r", "rr"],
-          "special_sounds": ["rolled_r", "soft_r"]
-        },
-        "common_difficulties": [
-          "rolled_r_pronunciation",
-          "vowel_purity",
-          "stress_patterns"
-        ]
-      },
-      "grammar_complexity": {
-        "verb_conjugation": "complex",
-        "noun_cases": "none",
-        "gender_system": "binary",
-        "subjunctive_system": "complex"
+      "development_priority": "phase_3",
+      "chinese_learner_specific": {
+        "pronunciation_challenges": ["th_sounds", "r_l_distinction"],
+        "grammar_difficulties": ["articles", "tenses"],
+        "cultural_bridges": ["business_english", "academic_english"]
       }
     }
   }
@@ -760,14 +777,22 @@
     "learning_profile": {
       "native_language": "zh",
       "target_languages": ["ja"],
+      "primary_target": "ja",
       "current_level": {
         "ja": "beginner"
       },
       "learning_goals": [
         "daily_conversation",
         "travel_communication",
-        "business_basics"
+        "business_basics",
+        "jlpt_preparation"
       ],
+      "japanese_specific": {
+        "kanji_background": "traditional_chinese",
+        "preferred_writing_system": "hiragana_first",
+        "keigo_comfort_level": "beginner",
+        "cultural_interest": ["anime", "business", "travel"]
+      },
       "motivation": "work_requirement",
       "available_time": {
         "daily_minutes": 30,
@@ -1113,9 +1138,15 @@
 5. **可追溯性**：完整的元数据和版本控制
 6. **性能优化**：合理的数据结构设计，支持高效查询
 
-### 9.2 扩展指南
+### 9.2 当前开发重点与扩展指南
 
-- **新增语言**：在language_configs中添加配置，实现对应的语言处理器
+**当前重点（Phase 1）**：
+- **日语功能深化**：完善日语特有的学习功能（假名、汉字、敬语、语调）
+- **中文母语优化**：利用汉字优势，针对中文母语者的学习特点优化
+- **核心场景完善**：餐厅、购物、交通、职场等核心场景的深度开发
+
+**未来扩展指南**：
+- **新增目标语言**：在language_configs中添加韩语、英语配置
 - **新增训练模式**：扩展training_module的module_type枚举
 - **新增场景**：创建新的对话模板和句子集合
 - **新增评估方式**：扩展success_criteria和assessment_schedule
